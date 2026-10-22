@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SejarahBot – Rakan Sejarah Anda</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <div class="app">
+
+    <!-- Header -->
+    <header class="wa-header">
+      <div class="wa-avatar" aria-hidden="true">SB</div>
+      <div class="wa-header-info">
+        <span class="wa-name">SejarahBot</span>
+        <span class="wa-status" id="statusText">Rakan Sejarah Anda 🇲🇾</span>
+      </div>
+      <button class="wa-reset-btn" id="resetBtn" title="Reset perbualan" aria-label="Reset perbualan">
+        <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
+          <path d="M17.65 6.35A7.958 7.958 0 0 0 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08A5.99 5.99 0 0 1 12 18c-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/>
+        </svg>
+      </button>
+    </header>
+
+    <!-- Notice banner -->
+    <div class="notice-banner" id="noticeBanner">
+      ℹ️ <strong>Nota:</strong> SejarahBot versi ini menggunakan <em>pangkalan pengetahuan</em> dan <em>pengenalan kata kunci</em> — bukan AI generatif. Jawapan adalah berdasarkan fakta sejarah Malaysia yang telah diprogramkan.
+      <button class="notice-close" id="noticeDismiss" aria-label="Tutup notis">✕</button>
+    </div>
+
+    <!-- Message list -->
+    <main class="wa-messages" id="messageList" role="log" aria-live="polite">
+    </main>
+
+    <!-- Quiz panel (hidden by default) -->
+    <div class="quiz-panel" id="quizPanel" hidden>
+      <div class="quiz-question" id="quizQuestion"></div>
+      <div class="quiz-options" id="quizOptions"></div>
+      <div class="quiz-feedback" id="quizFeedback" hidden></div>
+      <div class="quiz-nav">
+        <span class="quiz-score" id="quizScore">Markah: 0 / 0</span>
+        <button class="quiz-next-btn" id="quizNextBtn" hidden>Seterusnya ▶</button>
+        <button class="quiz-exit-btn" id="quizExitBtn">Tamat Kuiz</button>
+      </div>
+    </div>
+
+    <!-- Input bar -->
+    <footer class="wa-input-bar">
+      <textarea
+        id="userInput"
+        class="wa-textarea"
+        placeholder="Taip mesej anda…"
+        rows="1"
+        aria-label="Kotak input mesej"
+      ></textarea>
+      <button id="sendBtn" class="wa-send-btn" aria-label="Hantar mesej">
+        <svg viewBox="0 0 24 24" fill="currentColor" width="22" height="22">
+          <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+        </svg>
+      </button>
+    </footer>
+
+  </div>
+
+  <script src="quiz.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

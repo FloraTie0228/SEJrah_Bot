@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SejarahBot – Rakan Sejarah Anda</title>
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+
+  <!-- ── App Shell ── -->
+  <div class="app">
+
+    <!-- Header -->
+    <header class="wa-header">
+      <div class="wa-avatar" aria-hidden="true">SB</div>
+      <div class="wa-header-info">
+        <span class="wa-name">SejarahBot</span>
+        <span class="wa-status">Rakan Sejarah Anda</span>
+      </div>
+    </header>
+
+    <!-- Message list -->
+    <main class="wa-messages" id="messageList" role="log" aria-live="polite">
+      <!-- Welcome bubble injected by JS -->
+    </main>
+
+    <!-- Input bar -->
+    <footer class="wa-input-bar">
+      <textarea
+        id="userInput"
+        class="wa-textarea"
+        placeholder="Type a message…"
+        rows="1"
+        aria-label="Message input"
+      ></textarea>
+      <button id="sendBtn" class="wa-send-btn" aria-label="Send message">
+        <!-- Paper-plane SVG -->
+        <svg viewBox="0 0 24 24" fill="currentColor" width="22" height="22">
+          <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+        </svg>
+      </button>
+    </footer>
+
+  </div>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>
