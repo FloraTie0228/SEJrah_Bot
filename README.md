@@ -1,11 +1,12 @@
 # SejarahBot – Rakan Sejarah Anda 🇲🇾
 
-An interactive Malaysian history learning assistant with two separate deployable versions:
+An interactive Malaysian history learning assistant with three separate deployable versions:
 
 | Version | Technology | Deployment | API keys needed? |
 |---|---|---|---|
 | **Static (GitHub Pages)** | HTML + CSS + Vanilla JS | GitHub Pages (free) | ❌ None |
-| **Python (FastAPI)** | Python + FastAPI + OpenAI | Any server (VPS, Railway, Render) | ✅ OpenAI + optional Telegram |
+| **Telegram Bot (KB edition)** | Python + python-telegram-bot | Any server or local PC | ✅ Telegram token only |
+| **FastAPI Web Server** | Python + FastAPI + OpenAI | Any server (VPS, Railway, Render) | ✅ OpenAI + Telegram |
 
 ---
 
@@ -20,8 +21,9 @@ sejarahbot/
 │   ├── app.js                   ← Knowledge-base chatbot engine
 │   └── quiz.js                  ← Interactive quiz engine (scoring, explanations)
 │
-├── main.py                      ← FastAPI backend (OpenAI-powered)
-├── telegram_bot.py              ← Telegram long-polling bot (OpenAI-powered)
+├── sejarah_data.json            ← Shared knowledge base (22 topics + 30 quiz questions)
+├── telegram_bot.py              ← Telegram bot — knowledge-base edition (no OpenAI needed)
+├── main.py                      ← FastAPI backend (OpenAI-powered, optional)
 ├── requirements.txt             ← Python dependencies
 ├── templates/
 │   └── index.html               ← FastAPI chat UI shell
@@ -89,7 +91,123 @@ sejarahbot/
 
 ---
 
-## 🐍 Option B — Python FastAPI (OpenAI-powered)
+## 📱 Option B — Telegram Bot (Knowledge-Base Edition, Free)
+
+> **No OpenAI API key required.** Uses `sejarah_data.json` — the same knowledge base as the GitHub Pages site.
+
+### Features
+- `/start` — Welcome + reset session
+- `/help` — Command list
+- `/topik` — Browse all 22 history topics
+- `/kuiz` — Interactive quiz with inline keyboard buttons (Mudah/Sederhana/Sukar)
+- `/reset` — Clear conversation state
+- Free-text — Keyword-based topic matching (Bahasa Melayu + English)
+- Scoring, per-question explanations, final result with remarks
+- Separate state per user/chat — no data shared between users
+
+### ⚠️ Security — Revoke Your Previous Token First
+
+If you have used or shared your Telegram bot token before, **revoke it now**:
+
+1. Open Telegram → search `@BotFather`
+2. Send `/mybots` → select your bot
+3. Tap **API Token** → **Revoke current token**
+4. BotFather will generate a new token — copy it immediately
+5. Update your `.env` with the new token
+
+> Never re-use an exposed token. Treat a revealed token as compromised.
+
+### Windows Setup (step-by-step)
+
+**Step 1 — Install Python** (if not already installed)
+```
+https://www.python.org/downloads/
+```
+During install, tick ✅ **"Add Python to PATH"**
+
+**Step 2 — Open Command Prompt in the project folder**
+```
+Win + R → cmd → Enter
+cd C:\Users\User\.bob\playground\sejarahbot
+```
+Or right-click the folder → **Open in Terminal**
+
+**Step 3 — Create a virtual environment (recommended)**
+```cmd
+python -m venv venv
+venv\Scripts\activate
+```
+
+**Step 4 — Install dependencies**
+```cmd
+pip install python-telegram-bot==21.3 python-dotenv==1.0.1
+```
+
+**Step 5 — Configure your token**
+```cmd
+copy .env.example .env
+notepad .env
+```
+Edit the file and set:
+```
+TELEGRAM_BOT_TOKEN=your-real-token-from-botfather
+```
+Leave `OPENAI_API_KEY` blank or remove it — the Telegram bot no longer needs it.
+
+**Step 6 — Run the bot**
+```cmd
+python telegram_bot.py
+```
+
+You should see:
+```
+INFO  SejarahBot (knowledge-base edition) is running — no OpenAI key required.
+```
+
+**Step 7 — Test it**
+Open Telegram, find your bot, and send `/start`
+
+**Stop the bot:** Press `Ctrl+C` in the terminal.
+
+### Bot Commands Reference
+
+| Command | Description |
+|---|---|
+| `/start` | Welcome message + reset session |
+| `/help` | Show all commands |
+| `/topik` | List all 22 history topics |
+| `/kuiz` | Start interactive quiz (choose difficulty) |
+| `/reset` | Clear conversation and quiz state |
+| _(any text)_ | Keyword-based history response |
+
+### 🌐 Local vs. 24/7 Cloud Hosting
+
+| | Local PC | Cloud Hosting |
+|---|---|---|
+| **Cost** | Free | Free tier available |
+| **Available 24/7** | ❌ Only when PC is on | ✅ Always on |
+| **Setup difficulty** | Easy | Moderate |
+| **Good for** | Development, testing | Public deployment |
+
+**Free cloud hosting options:**
+
+| Platform | Free Tier | Notes |
+|---|---|---|
+| [Railway](https://railway.app) | 500 hours/month | Easiest — connect GitHub repo, auto-deploy |
+| [Render](https://render.com) | 750 hours/month | Supports background workers |
+| [Fly.io](https://fly.io) | 3 shared VMs | Slightly more complex setup |
+
+**Railway deployment (easiest):**
+1. Push your code to GitHub (already done ✅)
+2. Go to [railway.app](https://railway.app) → New Project → Deploy from GitHub
+3. Select your `SEJrah_Bot` repo
+4. Add environment variable: `TELEGRAM_BOT_TOKEN` = your token
+5. Set start command: `python telegram_bot.py`
+6. Deploy — bot runs 24/7
+
+---
+
+## 🐍 Option C — Python FastAPI (OpenAI-powered)
 
 ### Requirements
 - Python 3.10+
@@ -123,7 +241,7 @@ Open `http://127.0.0.1:8000` in your browser.
 
 ---
 
-## 📱 Option C — Telegram Bot (OpenAI-powered)
+## 📱 Option D — Telegram Bot (OpenAI-powered, Legacy)
 
 > **Note:** The Telegram bot uses long-polling and requires a **continuously running server**. It cannot run on GitHub Pages.
 
